@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
@@ -11,9 +12,13 @@ namespace ApiClient
     {
         class Joke
         {
+            [JsonPropertyName("id")]
             public int id { get; set; }
+            [JsonPropertyName("type")]
             public string type { get; set; }
+            [JsonPropertyName("setup")]
             public string setup { get; set; }
+            [JsonPropertyName("punchline")]
             public string punchline { get; set; }
 
 
@@ -23,12 +28,10 @@ namespace ApiClient
             var apijoke = new HttpClient();
 
             var responseAsStream = await apijoke.GetStreamAsync("https://official-joke-api.appspot.com/random_joke");
-            var items = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
-            foreach (var joke in jokes)
-            {
+            var joke = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
 
-            }
-
+            Console.WriteLine(joke.setup);
+            Console.WriteLine(joke.punchline);
 
 
             Console.WriteLine(responseAsStream);
@@ -46,5 +49,4 @@ namespace ApiClient
   "punchline": "Even if you're wrong, you're only off by a bit."
 }
 -- 4. Write code to query the API and show results.
--- 5. If your API has more than one endpoint (URL) support a few options, perhaps by creating a menu 
-    system in your application. */
+-- 5. If your API has more than one endpoint (URL) support a few options, perhaps by creating a menu system in your application. */
