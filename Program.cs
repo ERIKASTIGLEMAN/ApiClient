@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace ApiClient
 {
     public class Joke
-    // working
 
     {
         public int id { get; set; }
