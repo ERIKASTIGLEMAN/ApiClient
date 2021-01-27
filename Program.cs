@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ApiClient
 {
-    class Joke
+    public class Joke
     {
         public int id { get; set; }
         public string text { get; set; }
@@ -15,13 +17,21 @@ namespace ApiClient
     {
         static async Task Main(string[] args)
         {
+
+
             var client = new HttpClient();
 
-            var responseAsString = await client.GetStringAsync("https://official-joke-api.appspot.com/random_ten");
+            var responseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/random_ten");
 
-            Console.WriteLine(responseAsString);
+            var jokes = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
 
+            foreach (var joke in jokes)
+            {
 
+                Console.WriteLine($"{joke.text}?");
+                Console.WriteLine();
+                Console.WriteLine($"{joke.punchline}! HeHeHe");
+            }
         }
     }
 }
